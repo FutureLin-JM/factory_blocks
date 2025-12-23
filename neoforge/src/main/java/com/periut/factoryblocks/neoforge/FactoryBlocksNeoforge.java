@@ -28,6 +28,18 @@ public class FactoryBlocksNeoforge
         }
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::addCreative);
+    }
+
+    private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        Map<RegistryKey<ItemGroup>, List<Item>> entries = RegistryHelperImpl.getItemGroupEntries();
+        for (Map.Entry<RegistryKey<ItemGroup>, List<Item>> entry : entries.entrySet()) {
+            if (event.getTabKey().equals(entry.getKey())) {
+                for (Item item : entry.getValue()) {
+                    event.add(item);
+                }
+            }
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
